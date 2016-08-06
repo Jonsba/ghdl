@@ -180,7 +180,8 @@ package body Grt.Wave_Opt.Design is
          if Cursor.Kind = Not_Found then
             Print_Context (Cursor, Warning);
             Report_C (Cursor.Expr.all);
-            Report_E (" : first element of the path not found in design");
+            Report_C (" : first element of the path not found in design.");
+            Report_E (" more references may follow");
          elsif Cursor.Next_Child = null and then Cursor.Kind = Pkg_Entity then
             Print_Context (Cursor, Warning);
             Report_C (Cursor.Expr.all);
