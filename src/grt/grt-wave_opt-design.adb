@@ -25,6 +25,7 @@
 
 -- Description: See package specifications
 
+with Grt.Strings; use Grt.Strings;
 with Grt.Errors; use Grt.Errors;
 with Grt.Wave_Opt.File; use Grt.Wave_Opt.File;
 
@@ -58,7 +59,7 @@ package body Grt.Wave_Opt.Design is
    is
       Tree_Elem_Cursor : Elem_Acc;
       Last_Updated : Boolean;
-      Str_Name : constant String := Name (1 .. strlen (Name));
+      Str_Name : String := Name (1 .. strlen (Name));
    begin
       case State is
          when Write_File =>
@@ -73,6 +74,9 @@ package body Grt.Wave_Opt.Design is
             end if;
             return new Match_Elem_Type'(Tree_Elem_Cursor, null);
          when Display_Tree =>
+            -- If and for generate labels are in upper case in the design, but
+            -- the tree is lower case, then converti
+            --~ To_Lower (Str_Name);
             return Find_Cursor (Str_Name, Parent, Is_Signal);
          when Display_All =>
             return null;
