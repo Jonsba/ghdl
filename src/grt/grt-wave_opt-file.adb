@@ -374,10 +374,11 @@ package body Grt.Wave_Opt.File is
       Read_Mode : constant String := "rt" & ASCII.Nul;
       Write_Mode : constant String := "wt" & ASCII.Nul;
       Stream : FILEs;
-      Option_File_C : String (1 .. Option_File'Length + 1);
+      --~ Option_File_C : String (1 .. Option_File'Length + 1);
+      Option_File_C : constant String := "toto.txt" & ASCII.Nul;
    begin
-      Option_File_C (1 .. Option_File'Length) := Option_File;
-      Option_File_C (Option_File_C'Last) := ASCII.Nul;
+      --~ Option_File_C (1 .. Option_File'Length) := Option_File;
+      --~ Option_File_C (Option_File_C'Last) := ASCII.Nul;
       State := Display_Tree;
 
       Stream := fopen (Option_File_C'Address, Read_Mode'Address);
