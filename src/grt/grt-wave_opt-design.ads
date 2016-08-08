@@ -34,9 +34,9 @@
 --              the design to a new wave option file.
 
 with Grt.Types; use Grt.Types;
+with Grt.Avhpi; use Grt.Avhpi;
 
 package Grt.Wave_Opt.Design is
-   pragma Preelaborate;
 
    type Match_Elem_Type;
    type Match_List is access Match_Elem_Type;
@@ -47,13 +47,13 @@ package Grt.Wave_Opt.Design is
 
    -- Returns the top element of the tree corresponding to the index given, but
    -- only if the name given matches with it.  Otherwise returns null
-   function Get_Top_Cursor (Tree_Index : Tree_Index_Type; Name : Ghdl_C_String)
+   function Get_Top_Cursor (Tree_Index : Tree_Index_Type; Decl : VhpiHandleT)
                            return Match_List;
 
    -- If there is an element in the parent element given that matches the name
    -- given, returns it, otherwise returns null
    function Get_Cursor
-     (Parent : Match_List; Name : Ghdl_C_String; Is_Signal : Boolean := False)
+     (Parent : Match_List; Decl : VhpiHandleT; Is_Signal : Boolean := False)
      return Match_List;
 
    -- Returns true if the element given is not null, which means it exists in

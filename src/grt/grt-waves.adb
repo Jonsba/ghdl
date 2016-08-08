@@ -945,7 +945,7 @@ package body Grt.Waves is
             when VhpiPortDeclK
               | VhpiSigDeclK =>
                Match_List_Child := Get_Cursor
-                 (Match_List, Avhpi_Get_Base_Name (Decl), Is_Signal => True);
+                 (Match_List, Decl, Is_Signal => True);
                if Is_Displayed (Match_List_Child) then
                   case Step is
                      when Step_Name =>
@@ -985,7 +985,7 @@ package body Grt.Waves is
 
          Nbr_Scopes := Nbr_Scopes + 1;
 
-         Match_List_Child := Get_Cursor (Match_List, Avhpi_Get_Base_Name (Decl));
+         Match_List_Child := Get_Cursor (Match_List, Decl);
          if Is_Displayed (Match_List_Child) then
             case Vhpi_Get_Kind (Decl) is
                when VhpiIfGenerateK
@@ -1047,14 +1047,14 @@ package body Grt.Waves is
             Avhpi_Error (Error);
             return;
          end if;
-         Match_List := Get_Top_Cursor (Pkg, Avhpi_Get_Base_Name (Pack));
+         Match_List := Get_Top_Cursor (Pkg, Pack);
          if Is_Displayed (Match_List) then
             Wave_Put_Hierarchy_Block (Pack, Step, Match_List);
          end if;
       end loop;
 
       --  Then top entity.
-      Match_List := Get_Top_Cursor (Entity, Avhpi_Get_Base_Name (Root));
+      Match_List := Get_Top_Cursor (Entity, Root);
       if Is_Displayed (Match_List) then
          Wave_Put_Hierarchy_Block (Root, Step, Match_List);
       end if;

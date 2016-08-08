@@ -41,7 +41,8 @@ package body Grt.Wave_Opt.Design is
    -- (...)
    procedure Match_List_Append (List : in out Match_List; Tree_Elem : Elem_Acc);
 
-   function Get_Top_Cursor (Tree_Index : Tree_Index_Type; Name : Ghdl_C_String)
+   --~ function Get_Top_Cursor (Tree_Index : Tree_Index_Type; Name : Ghdl_C_String)
+   function Get_Top_Cursor (Tree_Index : Tree_Index_Type; Decl : VhpiHandleT)
                            return Match_List
    is
       Root : Match_List;
@@ -50,34 +51,41 @@ package body Grt.Wave_Opt.Design is
          Write_Tree_Comment (Tree_Index);
       end if;
       Root := new Match_Elem_Type'(Trees (Tree_Index), null);
-      return Get_Cursor (Root, Name);
+      return Get_Cursor (Root, Decl);
    end Get_Top_Cursor;
 
    function Get_Cursor (Parent : Match_List;
-                        Name : Ghdl_C_String;
+                        Decl : VhpiHandleT;
                         Is_Signal : Boolean := False) return Match_List
    is
       Tree_Elem_Cursor : Elem_Acc;
       Last_Updated : Boolean;
-      Str_Name : String := Name (1 .. strlen (Name));
+      Name_Orig : constant Ghdl_C_String := Avhpi_Get_Base_Name (Decl);
+      Name : String_Access;
    begin
+      case Vhpi_Get_Kind (Decl) is
+         when VhpiForGenerateK =>
+            Name := new String'("<for>");
+         when VhpiIfGenerateK =>
+            Name := new String'("<if>");
+         when others =>
+            Name := new String'(Name_Orig (1 .. strlen (Name_Orig)));
+      end case;
+
       case State is
          when Write_File =>
             Tree_Elem_Cursor := Parent.Tree_Elem;
             Last_Updated := True;
             Update_Tree (Cursor => Tree_Elem_Cursor,
                          Last_Updated => Last_Updated,
-                         Elem_Expr => Str_Name,
+                         Elem_Expr => Name.all,
                          Level => Tree_Elem_Cursor.Level + 1);
             if Is_Signal then
                Write_Signal_Path (Tree_Elem_Cursor);
             end if;
             return new Match_Elem_Type'(Tree_Elem_Cursor, null);
          when Display_Tree =>
-            -- If and for generate labels are in upper case in the design, but
-            -- the tree is lower case, then converti
-            --~ To_Lower (Str_Name);
-            return Find_Cursor (Str_Name, Parent, Is_Signal);
+            return Find_Cursor (Name.all, Parent, Is_Signal);
          when Display_All =>
             return null;
       end case;

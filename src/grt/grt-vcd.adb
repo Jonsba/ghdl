@@ -558,7 +558,7 @@ package body Grt.Vcd is
             when VhpiPortDeclK
               | VhpiSigDeclK =>
                Match_List_Child := Get_Cursor
-                 (Match_List, Avhpi_Get_Base_Name (Decl), Is_Signal => True);
+                 (Match_List, Decl, Is_Signal => True);
                if Is_Displayed (Match_List_Child) then
                   Add_Signal (Decl);
                end if;
@@ -587,7 +587,7 @@ package body Grt.Vcd is
               | VhpiBlockStmtK
               | VhpiCompInstStmtK =>
                Match_List_Child := Get_Cursor
-                 (Match_List, Avhpi_Get_Base_Name (Decl));
+                 (Match_List, Decl);
                if Is_Displayed (Match_List_Child) then
                   Vcd_Put ("$scope module ");
                   Vcd_Put_Name (Decl);
@@ -890,7 +890,7 @@ package body Grt.Vcd is
             Avhpi_Error (Error);
             return;
          end if;
-         Match_List := Get_Top_Cursor (Pkg, Avhpi_Get_Base_Name (Pack));
+         Match_List := Get_Top_Cursor (Pkg, Pack);
          if Is_Displayed (Match_List) then
             Vcd_Put_Hierarchy (Pack, Match_List);
          end if;
@@ -898,7 +898,7 @@ package body Grt.Vcd is
 
       --  Then top entity.
       Get_Root_Inst (Root);
-      Match_List := Get_Top_Cursor (Entity, Avhpi_Get_Base_Name (Root));
+      Match_List := Get_Top_Cursor (Entity, Root);
       if Is_Displayed (Match_List) then
          Vcd_Put_Hierarchy (Root, Match_List);
       end if;
