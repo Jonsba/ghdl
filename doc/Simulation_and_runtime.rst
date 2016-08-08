@@ -124,15 +124,30 @@ all options available, including the debugging one.
   file provided. If the file doesn't exist, creates it with all the signals of
   the design.
 
-  Here is a description of the wave option file format :
+  Here is a description of the wave option file format currently supported :
 
-     $ version = 1.0  # Optional
+     $ version = 1.1  # Optional
 
-     # Signals in packages :
+     # Path format for signals in packages :
      my_pkg.global_signal_a
 
-     # Signals in entities :
+     # Path format for signals in entities :
      /top/sub/clk
+
+     # Dumps every signals named reset in all sub entities of top
+     /top/*/reset
+
+     # Dumps recursively every signals named reset in all the sub entities of top
+     /top/**/reset
+
+     # Dump every signals of sub2 which could be anywhere in design except on top level
+     /**/sub2/*
+
+     # Dump every signals of sub3 which must be a direct sub entity of the top level
+     /*/sub3/*
+
+     # Dump every signals of all the sub entities of sub3 (but not those of sub3)
+     /**/sub3/*/*
 
 
 .. option:: --vcd=<FILENAME>
